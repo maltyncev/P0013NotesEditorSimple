@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Создаем пустой массив для хранения заметок
-        final ArrayList<String> notes = new ArrayList<>();
+        final ArrayList<Note> notes = new ArrayList<>();
 
         //Создаем объект адаптера
-        final NoteAdapter <String> noteAdapter;
-        noteAdapter = new NoteAdapter<String>(this, R.layout.item, notes);
+        final NoteAdapter noteAdapter;
+        noteAdapter = new NoteAdapter(notes);
 
         // Привяжем массив через адаптер к RecyclerView
         recyclerView.setAdapter(noteAdapter);
@@ -44,8 +44,10 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener oclBtCreate = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notes.add(0, etInput.getText().toString());
-                noteAdapter.notifyDataSetChanged();
+                String noteText = etInput.getText().toString();
+                Note note = new Note(noteText);
+                notes.add(0, note);
+                noteAdapter.notifyItemInserted(notes.size() - 1);
 
                 // Очищаем поле ввода
                 etInput.setText("");
